@@ -158,7 +158,7 @@ var cryptico = (function() {
 	// Converts a utf-8 string to a byte array.
     my.utf82bytes = function(string)
     {
-        var encoded = encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+        var encoded = encodeURIComponent(string).replace(/%([0-9A-F]{2})/g,
             function toSolidBytes(match, p1) {
                 return String.fromCharCode('0x' + p1);
         });
