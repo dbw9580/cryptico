@@ -3313,8 +3313,30 @@ var cryptico = (function() {
         return ret;
     }
     
-    // Converts a string to a byte array.
+     // Converts a string to a byte array.
     my.string2bytes = function(string)
+    {
+        var bytes = new Array();
+        for(var i = 0; i < string.length; i++) 
+        {
+            bytes.push(string.charCodeAt(i));
+        }
+        return bytes;
+    }
+
+    // Converts a byte array to a string.
+    my.bytes2string = function(bytes)
+    {
+        var string = "";
+        for(var i = 0; i < bytes.length; i++)
+        {
+            string += String.fromCharCode(bytes[i]);
+        }   
+        return string;
+	}
+	
+	// Converts a utf-8 string to a byte array.
+    my.utf82bytes = function(string)
     {
         var encoded = encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
             function toSolidBytes(match, p1) {
@@ -3328,8 +3350,8 @@ var cryptico = (function() {
         return bytes;
     }
 
-    // Converts a byte array to a string.
-    my.bytes2string = function(bytes)
+    // Converts a byte array to a utf-8 string.
+    my.bytes2utf8 = function(bytes)
     {
         var string = "";
         for(var i = 0; i < bytes.length; i++)
@@ -3390,7 +3412,7 @@ var cryptico = (function() {
     {
         var exkey = key.slice(0);
         aes.ExpandKey(exkey);
-        var blocks = my.string2bytes(plaintext);
+        var blocks = my.utf82bytes(plaintext);
         blocks = my.pad16(blocks);
         var encryptedBlocks = my.blockIV();
         for(var i = 0; i < blocks.length/16; i++)
@@ -3422,7 +3444,7 @@ var cryptico = (function() {
             decryptedBlocks = decryptedBlocks.concat(tempBlock);
         }
         decryptedBlocks = my.depad(decryptedBlocks);
-        return my.bytes2string(decryptedBlocks);
+        return my.bytes2utf8(decryptedBlocks);
     }
     
     // Wraps a string to 60 characters.
